@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "Bullet.h"
 #include "Enemy.h"
+#include "EasyBMP.h"
 
 using namespace std;
 
@@ -69,9 +70,9 @@ DWORD WINAPI backendMain(LPVOID lpParam)
 		{
 			prevTime = time(NULL);
 			for (int x = 0; x < bullets.size(); ++x)
-				bullets[x]->move;
+				bullets[x]->move();
 			for (int x = 0; x < enemies.size(); ++x)
-				enemies[x].move(p.getX, p.getY);
+				enemies[x].move(p.getX(), p.getY());
 			if (wKeyDown)
 				p.move(0);
 			else if (dKeyDown)
@@ -86,7 +87,7 @@ DWORD WINAPI backendMain(LPVOID lpParam)
 			prevTime2 = time(NULL);
 			for (int x = 0; x < enemies.size(); ++x)
 				if (enemies[x].getStrength())
-					bullets.push_back(enemies[x].attack(p.getX, p.getY));
+					bullets.push_back(enemies[x].attack(p.getX(), p.getY()));
 		}
 		if (difftime(time(NULL), prevTime3) > 0.001*p.getCooldown())
 		{

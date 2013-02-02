@@ -8,6 +8,10 @@
 #pragma comment(lib, "d2d1")
 #pragma comment(lib, "WindowsCodecs.lib")
 #include <ShObjIdl.h> //remove
+//#include "EasyBMP.h"
+#include <iostream>
+
+using namespace std;
 
 PWSTR pszFilePath; //remove
 
@@ -142,7 +146,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow
 			500,
 			NULL,
 			NULL)) {
-
+				char zasdf;
+	cin >> zasdf;
 			return 0;
 		}
 
@@ -161,7 +166,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow
 		CoUninitialize();
 	}
 	catch(int) { };
-
+	char zasdf;
+	cin >> zasdf;
 	return 0;
 }
 
