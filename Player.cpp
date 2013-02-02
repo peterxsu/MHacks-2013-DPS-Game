@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Bullet.h"
 
 
 Player::Player()
@@ -7,17 +8,15 @@ Player::Player()
 	y = 0;
 	health = 1;
 	strength = 1;
-	direction = 0;
 	cooldown = 1000;
 }
 
-Player::Player(int xpos, int ypos, int h, int s, int d, int c)
+Player::Player(int xpos, int ypos, int h, int s, int c)
 {
 	x = xpos;
 	y = ypos;
 	health = h;
 	strength = s;
-	direction = d;
 	cooldown = c;
 }
 
@@ -26,8 +25,17 @@ Player::~Player()
 
 }
 
-void Player::move(int dx, int dy)
+void Player::move(int dir)
 {
-	x += dx;
-	y += dy;
+	if (dir%2)
+		x -= dir-2;
+	else
+		y += dir-1;
+}
+
+Bullet* Player::attack(int dir)
+{
+	Bullet* b = new Bullet(x, y, strength, dir);
+	b->move();
+	return b;
 }

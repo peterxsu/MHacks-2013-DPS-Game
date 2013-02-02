@@ -10,5 +10,6 @@ public:
 	void move(int, int);
 	Bullet* attack(int, int);
 	void takeHit(int);
+	int getStrength() {return strength;}
 };
 
