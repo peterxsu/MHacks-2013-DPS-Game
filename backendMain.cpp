@@ -47,15 +47,15 @@ DWORD WINAPI backendMain(LPVOID lpParam)
 	save.open("data.sav");
 	if (!save.is_open())
 		;//probably should throw an exception
-	for (int x = 0; x < 235; ++x)
+	for (int x = 0; x < 25; ++x)
 	{
-		for (int y = 0; y < 700; ++y)
+		for (int y = 0; y < 120; ++y)
 			save << '0';
 		save << '\n';
 	}
 	for (int x = 0; x < 30; ++x)
 	{
-		for (int y = 0; y < 325; ++y)
+		for (int y = 0; y < 35; ++y)
 			save << '0';
 		for (int y = 0; y < 50; ++y)
 		{
@@ -64,13 +64,13 @@ DWORD WINAPI backendMain(LPVOID lpParam)
 			else
 				save << '1';
 		}
-		for (int y = 0; y < 325; ++y)
+		for (int y = 0; y < 35; ++y)
 			save << '0';
 		save << '\n';
 	}
-	for (int x = 0; x < 235; ++x)
+	for (int x = 0; x < 25; ++x)
 	{
-		for (int y = 0; y < 700; ++y)
+		for (int y = 0; y < 120; ++y)
 			save << '0';
 		save << '\n';
 	}
