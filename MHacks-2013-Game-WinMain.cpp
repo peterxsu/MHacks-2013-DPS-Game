@@ -5,11 +5,15 @@
 #include <Windows.h>
 #include <wincodec.h>
 #include <d2d1.h>
+#include "EasyBMP.h"
 #pragma comment(lib, "d2d1")
 #pragma comment(lib, "WindowsCodecs.lib")
-#include <ShObjIdl.h> //remove
+#include <ShObjIdl.h>
 
-PWSTR pszFilePath; //remove
+BMP DisplayBMP;
+LPWIN32_FIND_DATA FileData;
+PCWSTR FilePath;
+
 
 template <class DERIVED_TYPE>
 class BaseWindow {
@@ -111,24 +115,8 @@ long GetDesktopSizeVertical();
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow) {
 	try {
-		HRESULT hr = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE); // remove
-		if (FAILED(hr)) { throw 2; }; //remove
-
-		IFileOpenDialog *pFileOpen; //remove
-
-		hr = CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_ALL,
-			IID_IFileOpenDialog, reinterpret_cast<void**>(&pFileOpen)); //remove
-		if (FAILED(hr)) { throw 3; }; //remove
-
-		hr = pFileOpen->Show(NULL); //remove
-		if (FAILED(hr)) { throw 6; }; //remove
-
-		IShellItem *pItem; //remove
-		hr = pFileOpen->GetResult(&pItem); //remove
-		if (FAILED(hr)) { throw 4; }; //remove
-
-		hr = pItem->GetDisplayName(SIGDN_FILESYSPATH, &pszFilePath); //remove
-		if (FAILED(hr)) { throw 5; }; //remove
+		HRESULT hr = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
+		if (FAILED(hr)) { throw 1; };
 
 		MainWindow win;
 
@@ -148,17 +136,17 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow
 
 		ShowWindow(win.Window(), nCmdShow);
 
+		DisplayBMP.SetSize(700, 500);
+		DisplayBMP.SetBitDepth(32);
+		DisplayBMP.WriteToFile("\DisplayBMP.bmp");
 
+		FilePath = (PWSTR)L"DisplayBMP.bmp";
 
 		MSG msg = { };
 		while (GetMessage(&msg, NULL, 0, 0)) {
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
-		CoTaskMemFree(pszFilePath); //remove
-		SafeRelease(&pItem);
-		SafeRelease(&pFileOpen);
-		CoUninitialize();
 	}
 	catch(int) { };
 
@@ -192,7 +180,7 @@ void MainWindow::OnPaint() {
 	LoadBitmapFromFile(
 		pRenderTarget,
 		pIWICFactory,
-		pszFilePath,
+		FilePath,
 		&pBitmap);
 
 	pRenderTarget->BeginDraw();
@@ -265,6 +253,7 @@ HRESULT LoadBitmapFromFile(
 		GENERIC_READ,
 		WICDecodeMetadataCacheOnLoad,
 		&pDecoder);
+	while(FilePath == NULL) { }
 
 	if (FAILED(hr)) { throw 'a'; }
 	hr = pDecoder->GetFrame(0, &pSource);
