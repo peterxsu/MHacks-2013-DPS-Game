@@ -17,7 +17,9 @@ Enemy::~Enemy()
 void Enemy::move(int playerx, int playery)
 {
 	int diffx = playerx - x, diffy = playery - y;
-	if (diffx >= diffy)
+	if (diffx == 0 && diffy == 0)
+		return;
+	if (abs(diffx) >= abs(diffy))
 		x += diffx/abs(diffx);
 	else
 		y += diffy/abs(diffy);
