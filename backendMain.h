@@ -30,7 +30,7 @@ vector<Enemy> enemies;
 vector<Bullet*> bullets;
 bool tutorial = true;
 fstream save;
-time_t prevTime, prevTime2, prevTime3, prevTime4;
+time_t prevTime, prevTime2, prevTime3, prevTime4, prevTime5;
 
 void endTutorial();
 string expandMapUp();

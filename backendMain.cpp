@@ -58,6 +58,11 @@ void initialize()
 			save << '0';
 		save << '\n';
 	}
+	prevTime = time(NULL);
+	prevTime2 = prevTime;
+	prevTime3 = prevTime;
+	prevTime4 = prevTime;
+	prevTime5 = prevTime;
 	display.updateDisplay(enemies, bullets);
 }
 
@@ -70,6 +75,10 @@ void gameActions()
 			bullets[x]->move();
 		for (int x = 0; x < (int) enemies.size(); ++x)
 			enemies[x].move(p.getX(), p.getY());
+	}
+	if (difftime(time(NULL), prevTime5) > 0.05)
+	{
+		prevTime5 = time(NULL);
 		if (wKeyDown)
 		{
 			display.moveDisplay(0, -1);
