@@ -1,3 +1,5 @@
+#ifndef DISPLAY_H
+#define DISPLAY_H
 #include "EasyBMP.h"
 #include "Enemy.h"
 #include "Bullet.h"
@@ -7,8 +9,6 @@
 
 using namespace std;
 
-#ifndef DISPLAY_H
-#define DISPLAY_H
 class Display
 {
 private:
@@ -20,6 +20,6 @@ public:
 	Display();
 	Display(int, int);
 	~Display();
-	void updateDisplay(vector<Enemy>&, vector<Bullet>&);
+	void updateDisplay(vector<Enemy>&, vector<Bullet*>&);
 };
 #endif

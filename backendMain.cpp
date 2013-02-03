@@ -5,10 +5,11 @@
 #include <string>
 #include <cstdlib>
 #include <sstream>
-#include "Player.h"
-#include "Bullet.h"
-#include "Enemy.h"
-#include "EasyBMP.h"
+#include "../Player.h"
+#include "../Bullet.h"
+#include "../Enemy.h"
+#include "../EasyBMP.h"
+#include "../Display.h"
 
 using namespace std;
 
@@ -33,6 +34,7 @@ void addMapLeft(fstream&, string);
 
 DWORD WINAPI backendMain(LPVOID lpParam)
 {
+	srand(time(NULL));
 	//create player, enemy, bullets
 	Player p(340, 240, 100, 1, 1000);
 	vector<Enemy> enemies;
@@ -45,7 +47,7 @@ DWORD WINAPI backendMain(LPVOID lpParam)
 	enemies.push_back(tutor2);
 	//edit the .sav file
 	fstream save;
-	save.open("data.sav");
+	save.open("data.sav", fstream::out | fstream::trunc);
 	if (!save.is_open())
 		;//probably should throw an exception
 	for (int x = 0; x < 25; ++x)
@@ -75,8 +77,33 @@ DWORD WINAPI backendMain(LPVOID lpParam)
 			save << '0';
 		save << '\n';
 	}
+	
 	//detect keyboard presses and do appropriate action
 	//automatically move enemies and bullets
+	save.close();
+	save.open("data.sav", fstream::out | fstream::trunc);
+	for (int x = 0; x < 80; ++x)
+	{
+		for (int y = 0; y < 120; ++y)
+		{
+			if ((x == 39 || x == 40) && (y == 59 || y == 60))
+				save << 'P';
+			else
+				save << '1';
+		}
+		save << '\n';
+	}
+	save.close();
+	save.open("data.sav", fstream::in | fstream::app);
+	for (int x = 0; x < 10; ++x)
+	{
+		addMapUp(save, expandMapUp(save));
+		addMapDown(save, expandMapDown(save));
+		addMapLeft(save, expandMapLeft(save));
+		addMapRight(save, expandMapRight(save));
+	}
+	Display display(0, 0);
+	display.updateDisplay(enemies, bullets);
 	time_t prevTime = time(NULL), prevTime2 = prevTime, prevTime3 = prevTime, prevTime4 = prevTime;
 	while (true)
 	{
@@ -84,9 +111,9 @@ DWORD WINAPI backendMain(LPVOID lpParam)
 		if (difftime(time(NULL), prevTime) > 0.1)
 		{
 			prevTime = time(NULL);
-			for (int x = 0; x < bullets.size(); ++x)
+			for (int x = 0; x < (int) bullets.size(); ++x)
 				bullets[x]->move();
-			for (int x = 0; x < enemies.size(); ++x)
+			for (int x = 0; x < (int) enemies.size(); ++x)
 				enemies[x].move(p.getX(), p.getY());
 			if (wKeyDown)
 				p.move(0);
@@ -100,7 +127,7 @@ DWORD WINAPI backendMain(LPVOID lpParam)
 		if (difftime(time(NULL), prevTime2) > 1)
 		{
 			prevTime2 = time(NULL);
-			for (int x = 0; x < enemies.size(); ++x)
+			for (int x = 0; x < (int) enemies.size(); ++x)
 				if (enemies[x].getStrength())
 					bullets.push_back(enemies[x].attack(p.getX(), p.getY()));
 		}
@@ -124,18 +151,23 @@ DWORD WINAPI backendMain(LPVOID lpParam)
 			enemies.push_back(newEnemy);
 		}
 	}
+	save.close();
+	return 0;
 }
 
 string expandMapUp(fstream& fs)
 {
-	srand(time(NULL));
-	string additions = "";
+	fs.close();
+	fs.open("data.sav", fstream::in | fstream::app);
+	string additions = "", nextLine;
 	char below, above;
 	int blocking = -1;
 	bool blocked = true;
-	while (fs >> below && below != '\n')
+	getline(fs, nextLine);
+	stringstream ss(nextLine);
+	while (ss >> below)
 	{
-		int obstacle = rand() % 5;
+		int obstacle = rand() % 3;
 		if (obstacle == 0)
 		{
 			above = '0';
@@ -193,7 +225,8 @@ string expandMapUp(fstream& fs)
 
 string expandMapRight(fstream& fs)
 {
-	srand(time(NULL));
+	fs.close();
+	fs.open("data.sav", fstream::in | fstream::app);
 	string additions = "", nextLine;
 	char left, right;
 	int blocking = -1;
@@ -201,7 +234,7 @@ string expandMapRight(fstream& fs)
 	while (getline(fs, nextLine))
 	{
 		left = nextLine[nextLine.size() - 2];
-		int obstacle = rand() % 5;
+		int obstacle = rand() % 3;
 		if (obstacle == 0)
 		{
 			right = '0';
@@ -249,7 +282,8 @@ string expandMapRight(fstream& fs)
 						additions[additions.size() - 2 - 2 * x] = '1';
 			}
 		}
-		additions += right + '\n';
+		additions += right;
+		additions += '\n';
 	}
 	if (blocking < 3 && blocked)
 		for (int x = 0; x < 3; ++x)
@@ -259,16 +293,21 @@ string expandMapRight(fstream& fs)
 
 string expandMapDown(fstream& fs)
 {
-	srand(time(NULL));
+	fs.close();
+	fs.open("data.sav", fstream::in | fstream::app);
 	string additions = "", nextLine;
 	char below, above;
 	int blocking = -1;
 	bool blocked = true;
-	while (getline(fs, nextLine)) {}
-	stringstream ss(nextLine);
-	while (ss >> above && above != '\n')
+	stringstream* ss = nullptr;
+	while (getline(fs, nextLine))
 	{
-		int obstacle = rand() % 5;
+		delete ss;
+		ss = new stringstream(nextLine);
+	}
+	while (*ss >> above)
+	{
+		int obstacle = rand() % 3;
 		if (obstacle == 0)
 		{
 			below = '0';
@@ -318,6 +357,7 @@ string expandMapDown(fstream& fs)
 		}
 		additions += below;
 	}
+	delete ss;
 	if (blocking < 3 && blocked)
 		for (int x = 0; x < 3; ++x)
 			additions[additions.size() - 1 - x] = '1';
@@ -326,7 +366,8 @@ string expandMapDown(fstream& fs)
 
 string expandMapLeft(fstream& fs)
 {
-	srand(time(NULL));
+	fs.close();
+	fs.open("data.sav", fstream::in | fstream::app);
 	string additions = "", nextLine;
 	char left, right;
 	int blocking = -1;
@@ -334,7 +375,7 @@ string expandMapLeft(fstream& fs)
 	while (getline(fs, nextLine))
 	{
 		right = nextLine[0];
-		int obstacle = rand() % 5;
+		int obstacle = rand() % 3;
 		if (obstacle == 0)
 		{
 			left = '0';
@@ -382,7 +423,8 @@ string expandMapLeft(fstream& fs)
 						additions[additions.size() - 2 - 2 * x] = '1';
 			}
 		}
-		additions += left + '\n';
+		additions += left;
+		additions += '\n';
 	}
 	if (blocking < 3 && blocked)
 		for (int x = 0; x < 3; ++x)
@@ -392,18 +434,24 @@ string expandMapLeft(fstream& fs)
 
 void addMapUp(fstream& fs, string additions)
 {
+	fs.close();
+	fs.open("data.sav", fstream::in | fstream::app);
 	if (!fs.is_open())
-		;//throw exception
+		exit(1);//throw exception
 	string nextLine, newFile = additions;
 	while (getline(fs, nextLine))
 		newFile += nextLine + '\n';
+	fs.close();
+	fs.open("data.sav", fstream::out | fstream::trunc);
 	fs << newFile;
 }
 
 void addMapRight(fstream& fs, string additions)
 {
+	fs.close();
+	fs.open("data.sav", fstream::in | fstream::app);
 	if (!fs.is_open())
-		;//throw exception
+		exit(1);//throw exception
 	string nextLine, newFile = "";
 	size_t pos = 0;
 	while (getline(fs, nextLine))
@@ -412,24 +460,32 @@ void addMapRight(fstream& fs, string additions)
 		newFile += additions.substr(pos, additions.find('\n', pos) - pos + 1);
 		pos = additions.find('\n', pos) + 1;
 	}
+	fs.close();
+	fs.open("data.sav", fstream::out | fstream::trunc);
 	fs << newFile;
 }
 
 void addMapDown(fstream& fs, string additions)
 {
+	fs.close();
+	fs.open("data.sav", fstream::in | fstream::app);
 	if (!fs.is_open())
-		;//throw exception
+		exit(1);//throw exception
 	string nextLine, newFile = "";
 	while (getline(fs, nextLine))
 		newFile += nextLine + '\n';
 	newFile += additions;
+	fs.close();
+	fs.open("data.sav", fstream::out | fstream::trunc);
 	fs << newFile;
 }
 
 void addMapLeft(fstream& fs, string additions)
 {
+	fs.close();
+	fs.open("data.sav", fstream::in | fstream::app);
 	if (!fs.is_open())
-		;//throw exception
+		exit(1);//throw exception
 	string nextLine, newFile = "";
 	size_t pos = 0;
 	while (getline(fs, nextLine))
@@ -438,5 +494,8 @@ void addMapLeft(fstream& fs, string additions)
 		pos = additions.find('\n', pos) + 1;
 		newFile += nextLine + '\n';
 	}
+	fs.close();
+	fs.open("data.sav", fstream::out | fstream::trunc);
 	fs << newFile;
 }
+
