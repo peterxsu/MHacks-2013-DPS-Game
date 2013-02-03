@@ -5,12 +5,16 @@
 #include <Windows.h>
 #include <wincodec.h>
 #include <d2d1.h>
+
+#include "Display.h"
 #include "EasyBMP.h"
+#include "backendMain.h"
+
 #pragma comment(lib, "d2d1")
 #pragma comment(lib, "WindowsCodecs.lib")
+
 #include <ShObjIdl.h>
 
-BMP DisplayBMP;
 PCWSTR FilePath;
 
 template <class DERIVED_TYPE>
@@ -128,24 +132,26 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow
 			500,
 			NULL,
 			NULL)) {
+
 			return 0;
 		}
 
 		ShowWindow(win.Window(), nCmdShow);
 
-		DisplayBMP.SetSize(700, 500);
-		DisplayBMP.SetBitDepth(32);
-		DisplayBMP.WriteToFile("DisplayBMP.bmp");
+		FilePath = (PWSTR)L"display.bmp";
 
-		FilePath = (PWSTR)L"DisplayBMP.bmp";
+		initialize();
 
 		MSG msg = { };
 		while (GetMessage(&msg, NULL, 0, 0)) {
+			gameActions();
+
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
 	}
 	catch(int) { };
+
 	return 0;
 }
 

@@ -16,6 +16,7 @@ Display::Display()
 	enemy.ReadFromFile("enemy.bmp");
 	bullet.ReadFromFile("bullet.bmp");
 	world.open("data.sav");
+	image.WriteToFile("display.bmp");
 }
 
 Display::Display(int xpos, int ypos)
@@ -30,6 +31,7 @@ Display::Display(int xpos, int ypos)
 	enemy.ReadFromFile("enemy.bmp");
 	bullet.ReadFromFile("bullet.bmp");
 	world.open("data.sav");
+	image.WriteToFile("display.bmp");
 }
 
 Display::~Display()
