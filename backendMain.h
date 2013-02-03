@@ -32,9 +32,7 @@ bool tutorial = true;
 fstream save;
 time_t prevTime, prevTime2, prevTime3, prevTime4;
 
-void initialize();
 void endTutorial();
-void gameActions();
 string expandMapUp(fstream&);
 string expandMapRight(fstream&);
 string expandMapDown(fstream&);

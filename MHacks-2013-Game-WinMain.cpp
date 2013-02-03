@@ -8,7 +8,6 @@
 
 #include "Display.h"
 #include "EasyBMP.h"
-#include "backendMain.h"
 
 #pragma comment(lib, "d2d1")
 #pragma comment(lib, "WindowsCodecs.lib")
@@ -16,6 +15,9 @@
 #include <ShObjIdl.h>
 
 PCWSTR FilePath;
+
+void initialize();
+void gameActions();
 
 template <class DERIVED_TYPE>
 class BaseWindow {
