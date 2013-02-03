@@ -1,4 +1,7 @@
+#include "Bullet.h"
 
+#ifndef PLAYER_H
+#define PLAYER_H
 class Player
 {
 private:
@@ -20,4 +23,4 @@ public:
 	void move(int);
 	Bullet* attack(int);
 };
-
+#endif

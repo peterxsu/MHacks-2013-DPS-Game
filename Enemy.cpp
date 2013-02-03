@@ -23,6 +23,12 @@ void Enemy::move(int playerx, int playery)
 		y += diffy/abs(diffy);
 }
 
+void Enemy::move(int dx, int dy, int n)
+{
+	x += dx;
+	y += dy;
+}
+
 Bullet* Enemy::attack(int playerx, int playery)
 {
 	int diffx = playerx - x, diffy = playery - y;

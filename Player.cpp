@@ -25,14 +25,6 @@ Player::~Player()
 
 }
 
-void Player::move(int dir)
-{
-	if (dir%2)
-		x -= dir-2;
-	else
-		y += dir-1;
-}
-
 Bullet* Player::attack(int dir)
 {
 	Bullet* b = new Bullet(x, y, strength, dir);

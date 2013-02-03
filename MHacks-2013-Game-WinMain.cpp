@@ -11,9 +11,7 @@
 #include <ShObjIdl.h>
 
 BMP DisplayBMP;
-LPWIN32_FIND_DATA FileData;
 PCWSTR FilePath;
-
 
 template <class DERIVED_TYPE>
 class BaseWindow {
@@ -130,7 +128,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow
 			500,
 			NULL,
 			NULL)) {
-
+				char zasdf;
+	cin >> zasdf;
 			return 0;
 		}
 
@@ -149,7 +148,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow
 		}
 	}
 	catch(int) { };
-
+	char zasdf;
+	cin >> zasdf;
 	return 0;
 }
 

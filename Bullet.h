@@ -1,4 +1,5 @@
-
+#ifndef BULLET_H
+#define BULLET_H
 class Bullet
 {
 private:
@@ -11,6 +12,9 @@ public:
 	Bullet(int, int, int, int);
 	~Bullet();
 	int getStrength() {return strength;}
+	int getX() {return x;}
+	int getY() {return y;}
 	void move();
+	void move(int, int);
 };
-
+#endif
