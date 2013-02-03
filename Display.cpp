@@ -42,10 +42,12 @@ Display::~Display()
 void Display::updateDisplay(vector<Enemy>& enemies, vector<Bullet*>& bullets)
 {
 	string tmp;
+	world.close();
+	world.open("data.sav");
 	int yOffset = y%10;
 	int xOffset = x%10;
 	for (long long i = 0; i < (y/10); i++)
-		world.ignore(9223372036854775807, '\n');
+		getline(world, tmp);
 	//draw the background environment
 	for (int i = 0; i < (50 + (yOffset+9)/10); i++)
 	{

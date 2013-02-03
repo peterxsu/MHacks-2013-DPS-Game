@@ -33,14 +33,14 @@ fstream save;
 time_t prevTime, prevTime2, prevTime3, prevTime4;
 
 void endTutorial();
-string expandMapUp(fstream&);
-string expandMapRight(fstream&);
-string expandMapDown(fstream&);
-string expandMapLeft(fstream&);
+string expandMapUp();
+string expandMapRight();
+string expandMapDown();
+string expandMapLeft();
 char addAdditions(char, int&);
-void addMapUp(fstream&, string);
-void addMapRight(fstream&, string);
-void addMapDown(fstream&, string);
-void addMapLeft(fstream&, string);
+void addMapUp(string);
+void addMapRight(string);
+void addMapDown(string);
+void addMapLeft(string);
 
 #endif
