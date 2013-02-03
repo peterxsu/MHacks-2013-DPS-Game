@@ -16,6 +16,15 @@
 
 PCWSTR FilePath;
 
+extern bool wKeyDown;
+extern bool aKeyDown;
+extern bool sKeyDown;
+extern bool dKeyDown;
+extern bool upKeyDown;
+extern bool leftKeyDown;
+extern bool downKeyDown;
+extern bool rightKeyDown;
+
 void initialize();
 void gameActions();
 
@@ -235,6 +244,34 @@ LRESULT MainWindow::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 			return 0;
 		}
 
+	case WM_KEYDOWN:
+		{
+			if (GetKeyState(VK_ESCAPE)) { PostQuitMessage(0); }
+
+			if (GetKeyState(0x57)) { wKeyDown = true; }
+			if (GetKeyState(0x41)) { aKeyDown = true; }
+			if (GetKeyState(0x53)) { sKeyDown = true; }
+			if (GetKeyState(0x44)) { dKeyDown = true; }
+
+			if (GetKeyState(VK_UP)) { upKeyDown = true; }
+			if (GetKeyState(VK_DOWN)) { downKeyDown = true; }
+			if (GetKeyState(VK_LEFT)) { leftKeyDown = true; }
+			if (GetKeyState(VK_RIGHT)) { rightKeyDown = true; }
+		}
+
+	case WM_KEYUP:
+		{
+			if (GetKeyState(0x57)) { wKeyDown = false; }
+			if (GetKeyState(0x41)) { aKeyDown = false; }
+			if (GetKeyState(0x53)) { sKeyDown = false; }
+			if (GetKeyState(0x44)) { dKeyDown = false; }
+
+			if (GetKeyState(VK_UP)) { upKeyDown = false; }
+			if (GetKeyState(VK_DOWN)) { downKeyDown = false; }
+			if (GetKeyState(VK_LEFT)) { leftKeyDown = false; }
+			if (GetKeyState(VK_RIGHT)) { rightKeyDown = false; }
+		}
+
 		return 0;
 	}
 
@@ -246,7 +283,7 @@ HRESULT LoadBitmapFromFile(
 	IWICImagingFactory *pIWICFactory,
 	PCWSTR FileName,
 	ID2D1Bitmap **ppBitmap) {
-
+		
 	IWICBitmapDecoder *pDecoder = NULL;
 	IWICBitmapFrameDecode *pSource = NULL;
 	IWICFormatConverter *pConverter = NULL;
