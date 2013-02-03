@@ -26,7 +26,7 @@ string expandMapUp(fstream&);
 string expandMapRight(fstream&);
 string expandMapDown(fstream&);
 string expandMapLeft(fstream&);
-
+char addAdditions(char, int&);
 void addMapUp(fstream&, string);
 void addMapRight(fstream&, string);
 void addMapDown(fstream&, string);
@@ -186,66 +186,12 @@ string expandMapUp(fstream& fs)
 	fs.close();
 	fs.open("data.sav", fstream::in | fstream::app);
 	string additions = "", nextLine;
-	char below, above;
-	int blocking = -1;
-	bool blocked = true;
+	char below;
+	int count = 0;
 	getline(fs, nextLine);
 	stringstream ss(nextLine);
 	while (ss >> below)
-	{
-		int obstacle = rand() % 3;
-		if (obstacle == 0)
-		{
-			above = '0';
-			if (blocking == -1 && below == '1')
-				blocking = 0;
-			else if (blocking > 0 && below == '1')
-			{
-				if (blocking == 3)
-					blocked = false;
-				blocking = 0;
-			}
-			else if (blocking >= 0 && below == '0')
-			{
-				if (blocking == 3 || !blocked)
-				{
-					blocking = -1;
-					blocked = true;
-				}
-				else
-					for (int x = 0; x < 3; ++x)//figure out a way to correct the last few entries to provide enough spaces
-						additions[additions.size() - 1 - x] = '1';
-			}
-		}
-		else
-		{
-			above = '1';
-			if (blocking >= 0 && below == '1')
-			{
-				if (blocking == 3)
-					blocked = false;
-				else
-					blocking++;
-			}
-			else if (below == '1')
-				blocking = 1;
-			else if (blocking >= 0 && below == '0')
-			{
-				if (blocking == 3 || !blocked)
-				{
-					blocked = true;
-					blocking = -1;
-				}
-				else
-					for (int x = 0; x < 3; ++x)//figure out a way to correct the last few entries to provide enough spaces
-						additions[additions.size() - 1 - x] = '1';
-			}
-		}
-		additions += above;
-	}
-	if (blocking < 3 && blocked)
-		for (int x = 0; x < 3; ++x)
-			additions[additions.size() - 1 - x] = '1';
+		additions += addAdditions(below, count);
 	return (additions + '\n');
 }
 
@@ -254,66 +200,14 @@ string expandMapRight(fstream& fs)
 	fs.close();
 	fs.open("data.sav", fstream::in | fstream::app);
 	string additions = "", nextLine;
-	char left, right;
-	int blocking = -1;
-	bool blocked = true;
+	char left;
+	int count = 0;
 	while (getline(fs, nextLine))
 	{
 		left = nextLine[nextLine.size() - 2];
-		int obstacle = rand() % 3;
-		if (obstacle == 0)
-		{
-			right = '0';
-			if (blocking == -1 && left == '1')
-				blocking = 0;
-			else if (blocking > 0 && left == '1')
-			{
-				if (blocking == 3)
-					blocked = false;
-				blocking = 0;
-			}
-			else if (blocking >= 0 && left == '0')
-			{
-				if (blocking == 3 || !blocked)
-				{
-					blocking = -1;
-					blocked = true;
-				}
-				else
-					for (int x = 0 ; x < 3; ++x)//figure out a way to correct the last few entries to provide enough spaces
-						additions[additions.size() - 2 - 2 * x] = '1';
-			}
-		}
-		else
-		{
-			right = '1';
-			if (blocking >= 0 && left == '1')
-			{
-				if (blocking == 3)
-					blocked = false;
-				else
-					blocking++;
-			}
-			else if (left == '1')
-				blocking = 1;
-			else if (blocking >= 0 && left == '0')
-			{
-				if (blocking == 3 || !blocked)
-				{
-					blocked = true;
-					blocking = -1;
-				}
-				else
-					for (int x = 0 ; x < 3; ++x)//figure out a way to correct the last few entries to provide enough spaces
-						additions[additions.size() - 2 - 2 * x] = '1';
-			}
-		}
-		additions += right;
+		additions += addAdditions(left, count);
 		additions += '\n';
 	}
-	if (blocking < 3 && blocked)
-		for (int x = 0; x < 3; ++x)
-			additions[additions.size() - 2 - 2 * x] = '1';
 	return additions;
 }
 
@@ -322,9 +216,8 @@ string expandMapDown(fstream& fs)
 	fs.close();
 	fs.open("data.sav", fstream::in | fstream::app);
 	string additions = "", nextLine;
-	char below, above;
-	int blocking = -1;
-	bool blocked = true;
+	char above;
+	int count = 0;
 	stringstream* ss = nullptr;
 	while (getline(fs, nextLine))
 	{
@@ -332,61 +225,8 @@ string expandMapDown(fstream& fs)
 		ss = new stringstream(nextLine);
 	}
 	while (*ss >> above)
-	{
-		int obstacle = rand() % 3;
-		if (obstacle == 0)
-		{
-			below = '0';
-			if (blocking == -1 && above == '1')
-				blocking = 0;
-			else if (blocking > 0 && above == '1')
-			{
-				if (blocking == 3)
-					blocked = false;
-				blocking = 0;
-			}
-			else if (blocking >= 0 && above == '0')
-			{
-				if (blocking == 3 || !blocked)
-				{
-					blocking = -1;
-					blocked = true;
-				}
-				else
-					for (int x = 0; x < 3; ++x)//figure out a way to correct the last few entries to provide enough spaces
-						additions[additions.size() - 1 - x] = '1';
-			}
-		}
-		else
-		{
-			below = '1';
-			if (blocking >= 0 && above == '1')
-			{
-				if (blocking == 3)
-					blocked = false;
-				else
-					blocking++;
-			}
-			else if (above == '1')
-				blocking = 1;
-			else if (blocking >= 0 && above == '0')
-			{
-				if (blocking == 3 || !blocked)
-				{
-					blocked = true;
-					blocking = -1;
-				}
-				else
-					for (int x = 0; x < 3; ++x)//figure out a way to correct the last few entries to provide enough spaces
-						additions[additions.size() - 1 - x] = '1';
-			}
-		}
-		additions += below;
-	}
+		additions += addAdditions(above, count);
 	delete ss;
-	if (blocking < 3 && blocked)
-		for (int x = 0; x < 3; ++x)
-			additions[additions.size() - 1 - x] = '1';
 	return (additions + '\n');
 }
 
@@ -395,67 +235,54 @@ string expandMapLeft(fstream& fs)
 	fs.close();
 	fs.open("data.sav", fstream::in | fstream::app);
 	string additions = "", nextLine;
-	char left, right;
-	int blocking = -1;
-	bool blocked = true;
+	char right;
+	int count = 0;
 	while (getline(fs, nextLine))
 	{
 		right = nextLine[0];
-		int obstacle = rand() % 3;
-		if (obstacle == 0)
+		additions += addAdditions(right, count);
+		additions += '\n';
+	}
+	return additions;
+}
+
+char addAdditions(char inside, int& count)
+{
+	int tmp = rand() % 3;
+	char outside;
+	if (!tmp)
+	{
+		outside = '1';
+		count = (count + 1) % 3;
+	}
+	else
+	{
+		if (count > 0 && count < 3)
 		{
-			left = '0';
-			if (blocking == -1 && right == '1')
-				blocking = 0;
-			else if (blocking > 0 && right == '1')
+			outside = '1';
+			count = (count + 1) % 3;
+		}
+		else if (inside == '1')
+		{
+			tmp = rand() % 2;
+			if (tmp)
 			{
-				if (blocking == 3)
-					blocked = false;
-				blocking = 0;
+				outside = '1';
+				count = (count + 1) % 3;
 			}
-			else if (blocking >= 0 && right == '0')
+			else
 			{
-				if (blocking == 3 || !blocked)
-				{
-					blocking = -1;
-					blocked = true;
-				}
-				else
-					for (int x = 0 ; x < 3; ++x)//figure out a way to correct the last few entries to provide enough spaces
-						additions[additions.size() - 2 - 2 * x] = '1';
+				outside = '0';
+				count = 0;
 			}
 		}
 		else
 		{
-			left = '1';
-			if (blocking >= 0 && right == '1')
-			{
-				if (blocking == 3)
-					blocked = false;
-				else
-					blocking++;
-			}
-			else if (right == '1')
-				blocking = 1;
-			else if (blocking >= 0 && right == '0')
-			{
-				if (blocking == 3 || !blocked)
-				{
-					blocked = true;
-					blocking = -1;
-				}
-				else
-					for (int x = 0 ; x < 3; ++x)//figure out a way to correct the last few entries to provide enough spaces
-						additions[additions.size() - 2 - 2 * x] = '1';
-			}
+			outside = '0';
+			count = 0;
 		}
-		additions += left;
-		additions += '\n';
 	}
-	if (blocking < 3 && blocked)
-		for (int x = 0; x < 3; ++x)
-			additions[additions.size() - 2 - 2 * x] = '1';
-	return additions;
+	return outside;
 }
 
 void addMapUp(fstream& fs, string additions)
