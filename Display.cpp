@@ -1,5 +1,7 @@
 #include "Display.h"
-
+#include <fstream>
+#include <iostream>
+#include <string>
 using namespace std;
 
 Display::Display()
@@ -13,7 +15,7 @@ Display::Display()
 	person.ReadFromFile("person.bmp");
 	enemy.ReadFromFile("enemy.bmp");
 	bullet.ReadFromFile("bullet.bmp");
-	world.open("file name");
+	world.open("data.sav");
 }
 
 Display::Display(int xpos, int ypos)
@@ -27,7 +29,7 @@ Display::Display(int xpos, int ypos)
 	person.ReadFromFile("person.bmp");
 	enemy.ReadFromFile("enemy.bmp");
 	bullet.ReadFromFile("bullet.bmp");
-	world.open("file name");
+	world.open("data.sav");
 }
 
 Display::~Display()
@@ -35,9 +37,9 @@ Display::~Display()
 
 }
 
-void Display::updateDisplay(vector<Enemy>& enemies, vector<Bullet>& bullets)
+void Display::updateDisplay(vector<Enemy>& enemies, vector<Bullet*>& bullets)
 {
-	char* tmp;
+	string tmp;
 	int yOffset = y%10;
 	int xOffset = x%10;
 	for (long long i = 0; i < (y/10); i++)
@@ -45,7 +47,7 @@ void Display::updateDisplay(vector<Enemy>& enemies, vector<Bullet>& bullets)
 	//draw the background environment
 	for (int i = 0; i < (50 + (yOffset+9)/10); i++)
 	{
-		world.getline(tmp, 9223372036854775807);
+		getline(world, tmp);
 		for (int j = 0; j < (70 + (xOffset +9)/10); j++)
 		{
 			if (tmp[x/10 + j] == '0')
@@ -57,7 +59,8 @@ void Display::updateDisplay(vector<Enemy>& enemies, vector<Bullet>& bullets)
 	//draw the Player, Enemies, and Bullets
 	RangedPixelToPixelCopy(person, 0, 19, 19, 0, image, 340, 240);
 	for (int i = 0; i < enemies.size(); i++)
-		RangedPixelToPixelCopy(enemy, 0, 19, 0, 19, image, enemies[i].getX(), enemies[i].getY());
+		RangedPixelToPixelCopy(enemy, 0, 9, 0, 9, image, enemies[i].getX(), enemies[i].getY());
 	for (int i = 0; i < bullets.size(); i++)
-		RangedPixelToPixelCopy(bullet, 0, 1, 0, 1, image, bullets[i].getX(), bullets[i].getY());
+		RangedPixelToPixelCopy(bullet, 0, 1, 0, 1, image, bullets[i]->getX(), bullets[i]->getY());
+	image.WriteToFile("display.bmp");
 }
