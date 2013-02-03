@@ -1,11 +1,11 @@
 #include "backendMain.h"
 
-DWORD WINAPI backendMain(LPVOID lpParam)
+/*DWORD WINAPI backendMain(LPVOID lpParam)
 {
-	//detect keyboard presses and do appropriate action
-	//automatically move enemies and bullets
+	detect keyboard presses and do appropriate action
+	automatically move enemies and bullets
 	
-	/*save.close();
+	save.close();
 	save.open("data.sav", fstream::in | fstream::app);
 	for (int x = 0; x < 10; ++x)
 	{
@@ -15,9 +15,9 @@ DWORD WINAPI backendMain(LPVOID lpParam)
 		addMapRight(expandMapRight());
 	}
 	display.updateDisplay(enemies, bullets);
-	save.close();*/
+	save.close();
 	return 0;
-}
+}*/
 
 void initialize()
 {

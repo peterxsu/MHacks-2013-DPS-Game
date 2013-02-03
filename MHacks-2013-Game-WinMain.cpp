@@ -246,30 +246,34 @@ LRESULT MainWindow::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
 	case WM_KEYDOWN:
 		{
-			if (GetKeyState(VK_ESCAPE)) { PostQuitMessage(0); }
+			if (GetAsyncKeyState(VK_ESCAPE)) { PostQuitMessage(0); }
 
-			if (GetKeyState(0x57)) { wKeyDown = true; }
-			if (GetKeyState(0x41)) { aKeyDown = true; }
-			if (GetKeyState(0x53)) { sKeyDown = true; }
-			if (GetKeyState(0x44)) { dKeyDown = true; }
+			if (GetAsyncKeyState(0x57) & 0x8000) { wKeyDown = true; }
+			if (GetAsyncKeyState(0x41) & 0x8000) { aKeyDown = true; }
+			if (GetAsyncKeyState(0x53) & 0x8000) { sKeyDown = true; }
+			if (GetAsyncKeyState(0x44) & 0x8000) { dKeyDown = true; }
 
-			if (GetKeyState(VK_UP)) { upKeyDown = true; }
-			if (GetKeyState(VK_DOWN)) { downKeyDown = true; }
-			if (GetKeyState(VK_LEFT)) { leftKeyDown = true; }
-			if (GetKeyState(VK_RIGHT)) { rightKeyDown = true; }
+			if (GetAsyncKeyState(VK_UP) & 0x8000) { upKeyDown = true; }
+			if (GetAsyncKeyState(VK_DOWN) & 0x8000) { downKeyDown = true; }
+			if (GetAsyncKeyState(VK_LEFT) & 0x8000) { leftKeyDown = true; }
+			if (GetAsyncKeyState(VK_RIGHT) & 0x8000) { rightKeyDown = true; }
+
+			return 0;
 		}
 
 	case WM_KEYUP:
 		{
-			if (GetKeyState(0x57)) { wKeyDown = false; }
-			if (GetKeyState(0x41)) { aKeyDown = false; }
-			if (GetKeyState(0x53)) { sKeyDown = false; }
-			if (GetKeyState(0x44)) { dKeyDown = false; }
+			if (GetAsyncKeyState(0x57) & 0x8000) { wKeyDown = false; }
+			if (GetAsyncKeyState(0x41) & 0x8000) { aKeyDown = false; }
+			if (GetAsyncKeyState(0x53) & 0x8000) { sKeyDown = false; }
+			if (GetAsyncKeyState(0x44) & 0x8000) { dKeyDown = false; }
 
-			if (GetKeyState(VK_UP)) { upKeyDown = false; }
-			if (GetKeyState(VK_DOWN)) { downKeyDown = false; }
-			if (GetKeyState(VK_LEFT)) { leftKeyDown = false; }
-			if (GetKeyState(VK_RIGHT)) { rightKeyDown = false; }
+			if (GetAsyncKeyState(VK_UP) & 0x8000) { upKeyDown = false; }
+			if (GetAsyncKeyState(VK_DOWN) & 0x8000) { downKeyDown = false; }
+			if (GetAsyncKeyState(VK_LEFT) & 0x8000) { leftKeyDown = false; }
+			if (GetAsyncKeyState(VK_RIGHT) & 0x8000) { rightKeyDown = false; }
+
+			return 0;
 		}
 
 		return 0;

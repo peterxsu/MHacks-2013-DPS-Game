@@ -1,7 +1,6 @@
 #ifndef BACKENDMAIN_H
 #define BACKENDMAIN_H
 
-#include <windows.h>
 #include <fstream>
 #include <ctime>
 #include <vector>
@@ -16,14 +15,14 @@
 
 using namespace std;
 
-bool wKeyDown = false;
-bool aKeyDown = false;
-bool sKeyDown = false;
-bool dKeyDown = false;
-bool upKeyDown = false;
-bool leftKeyDown = false;
-bool downKeyDown = false;
-bool rightKeyDown = false;
+extern bool wKeyDown = false;
+extern bool aKeyDown = false;
+extern bool sKeyDown = false;
+extern bool dKeyDown = false;
+extern bool upKeyDown = false;
+extern bool leftKeyDown = false;
+extern bool downKeyDown = false;
+extern bool rightKeyDown = false;
 Display display(250, 150);
 Player p(340, 240, 100, 1, 1000);
 vector<Enemy> enemies;
