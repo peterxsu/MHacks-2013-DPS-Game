@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #include <windows.h>
 #include <fstream>
 #include <ctime>
@@ -41,6 +42,9 @@ void addMapUp(string);
 void addMapRight(string);
 void addMapDown(string);
 void addMapLeft(string);
+=======
+#include "backendMain.h"
+>>>>>>> 09301eb140fe2da171a3c90f63851c710e4945b3
 
 DWORD WINAPI backendMain(LPVOID lpParam)
 {

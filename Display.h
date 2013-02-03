@@ -22,5 +22,9 @@ public:
 	~Display();
 	void updateDisplay(vector<Enemy>&, vector<Bullet*>&);
 	void moveDisplay(int, int);
+	long long getX() {return x;}
+	long long getY() {return y;}
+	long long getMapX();
+	long long getMapY();
 };
 #endif
