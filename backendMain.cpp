@@ -77,6 +77,8 @@ DWORD WINAPI backendMain(LPVOID lpParam)
 			save << '0';
 		save << '\n';
 	}
+	Display display(250, 150);
+	display.updateDisplay(enemies, bullets);
 	
 	//detect keyboard presses and do appropriate action
 	//automatically move enemies and bullets
@@ -102,7 +104,6 @@ DWORD WINAPI backendMain(LPVOID lpParam)
 		addMapLeft(save, expandMapLeft(save));
 		addMapRight(save, expandMapRight(save));
 	}
-	Display display(0, 0);
 	display.updateDisplay(enemies, bullets);
 	time_t prevTime = time(NULL), prevTime2 = prevTime, prevTime3 = prevTime, prevTime4 = prevTime;
 	while (true)
