@@ -128,8 +128,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow
 			500,
 			NULL,
 			NULL)) {
-				char zasdf;
-	cin >> zasdf;
 			return 0;
 		}
 
@@ -137,7 +135,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow
 
 		DisplayBMP.SetSize(700, 500);
 		DisplayBMP.SetBitDepth(32);
-		DisplayBMP.WriteToFile("\DisplayBMP.bmp");
+		DisplayBMP.WriteToFile("DisplayBMP.bmp");
 
 		FilePath = (PWSTR)L"DisplayBMP.bmp";
 
@@ -148,8 +146,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow
 		}
 	}
 	catch(int) { };
-	char zasdf;
-	cin >> zasdf;
 	return 0;
 }
 
