@@ -70,3 +70,19 @@ void Display::moveDisplay(int dx, int dy)
 	x += dx;
 	y += dy;
 }
+
+long long Display::getMapX()
+{
+	string nextLine;
+	getline(world, nextLine);
+	return (long long) nextLine.size() * 10;
+}
+
+long long Display::getMapY()
+{
+	string nextLine;
+	long long count = 0;
+	while (getline(world, nextLine))
+		count += 10;
+	return count;
+}
