@@ -21,5 +21,6 @@ public:
 	Display(int, int);
 	~Display();
 	void updateDisplay(vector<Enemy>&, vector<Bullet*>&);
+	void moveDisplay(int, int);
 };
 #endif

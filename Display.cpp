@@ -64,3 +64,9 @@ void Display::updateDisplay(vector<Enemy>& enemies, vector<Bullet*>& bullets)
 		RangedPixelToPixelCopy(bullet, 0, 1, 0, 1, image, bullets[i]->getX(), bullets[i]->getY());
 	image.WriteToFile("display.bmp");
 }
+
+void Display::moveDisplay(int dx, int dy)
+{
+	x += dx;
+	y += dy;
+}

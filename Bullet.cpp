@@ -29,3 +29,9 @@ void Bullet::move()
 	else
 		y += direction-1;
 }
+
+void Bullet::move(int dx, int dy)
+{
+	x += dx;
+	y += dy;
+}

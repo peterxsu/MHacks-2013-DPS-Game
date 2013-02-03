@@ -5,11 +5,11 @@
 #include <string>
 #include <cstdlib>
 #include <sstream>
-#include "../Player.h"
-#include "../Bullet.h"
-#include "../Enemy.h"
-#include "../EasyBMP.h"
-#include "../Display.h"
+#include "Player.h"
+#include "Bullet.h"
+#include "Enemy.h"
+#include "EasyBMP.h"
+#include "Display.h"
 
 using namespace std;
 
@@ -116,13 +116,37 @@ DWORD WINAPI backendMain(LPVOID lpParam)
 			for (int x = 0; x < (int) enemies.size(); ++x)
 				enemies[x].move(p.getX(), p.getY());
 			if (wKeyDown)
-				p.move(0);
+			{
+				display.moveDisplay(0, 1);
+				for (int x = 0; x < (int) bullets.size(); ++x)
+					bullets[x]->move(0, 1);
+				for (int x = 0; x < (int) enemies.size(); ++x)
+					enemies[x].move(0, 1, 0);
+			}
 			else if (dKeyDown)
-				p.move(1);
+			{
+				display.moveDisplay(-1, 0);
+				for (int x = 0; x < (int) bullets.size(); ++x)
+					bullets[x]->move(-1, 0);
+				for (int x = 0; x < (int) enemies.size(); ++x)
+					enemies[x].move(-1, 0, 0);
+			}
 			else if (sKeyDown)
-				p.move(2);
+			{
+				display.moveDisplay(0, -1);
+				for (int x = 0; x < (int) bullets.size(); ++x)
+					bullets[x]->move(0, -1);
+				for (int x = 0; x < (int) enemies.size(); ++x)
+					enemies[x].move(0, -1, 0);
+			}
 			else if (aKeyDown)
-				p.move(3);
+			{
+				display.moveDisplay(1, 0);
+				for (int x = 0; x < (int) bullets.size(); ++x)
+					bullets[x]->move(1, 0);
+				for (int x = 0; x < (int) enemies.size(); ++x)
+					enemies[x].move(1, 0, 0);
+			}
 		}
 		if (difftime(time(NULL), prevTime2) > 1)
 		{
@@ -150,6 +174,7 @@ DWORD WINAPI backendMain(LPVOID lpParam)
 			Enemy newEnemy(0,0,5,1);
 			enemies.push_back(newEnemy);
 		}
+		display.updateDisplay(enemies, bullets);
 	}
 	save.close();
 	return 0;

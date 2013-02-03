@@ -15,5 +15,6 @@ public:
 	int getX() {return x;}
 	int getY() {return y;}
 	void move();
+	void move(int, int);
 };
 #endif
