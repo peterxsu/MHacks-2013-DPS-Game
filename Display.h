@@ -5,6 +5,8 @@
 #include <iostream>
 #include <fstream>
 
+using namespace std;
+
 #ifndef DISPLAY_H
 #define DISPLAY_H
 class Display

@@ -37,7 +37,7 @@ Display::~Display()
 
 void Display::updateDisplay(vector<Enemy>& enemies, vector<Bullet>& bullets)
 {
-	char* tmp;
+	char* tmp = NULL;
 	int yOffset = y%10;
 	int xOffset = x%10;
 	for (long long i = 0; i < (y/10); i++)
